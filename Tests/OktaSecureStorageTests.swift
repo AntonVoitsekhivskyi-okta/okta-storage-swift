@@ -212,6 +212,13 @@ class OktaSecureStorageTests: XCTestCase {
 #endif
     }
 
+    func testSetAndMultipleGetByPrefix() {
+        verifyGetPrefixKey(behindBiometrics: false)
+#if !targetEnvironment(simulator)
+        verifyGetPrefixKey(behindBiometrics: true)
+#endif
+    }
+    
     func testSetAndGetWithEmptyApplicationPassword() {
 #if targetEnvironment(simulator)
         return
@@ -389,5 +396,50 @@ class OktaSecureStorageTests: XCTestCase {
         } catch let error as NSError {
             XCTAssert(error.code == errSecItemNotFound)
         }
+    }
+    
+    private func verifyGetPrefixKey(behindBiometrics: Bool) {
+        do {
+            try secureStorage.set(data: "someData1".data(using: .utf8)!, forKey: "account1", behindBiometrics: behindBiometrics)
+            try secureStorage.set(data: "someData2".data(using: .utf8)!, forKey: "account2", behindBiometrics: behindBiometrics)
+            try secureStorage.set(data: "someData3".data(using: .utf8)!, forKey: "anotherKey", behindBiometrics: behindBiometrics)
+            let result = try secureStorage.getStoredKeysMatching(prefix: "account", biometricPrompt: nil)
+            XCTAssertEqual(2, result.count)
+            XCTAssertTrue(result.contains("account1"))
+            XCTAssertTrue(result.contains("account2"))
+        } catch let error {
+            XCTFail("Keychain operation failed - \(error)")
+        }
+
+        do {
+            try secureStorage.set(data: "someData1".data(using: .utf8)!, forKey: "account1", behindBiometrics: behindBiometrics)
+            try secureStorage.set(data: "someData1".data(using: .utf8)!, forKey: "account2", behindBiometrics: behindBiometrics)
+            try secureStorage.set(data: "someData3".data(using: .utf8)!, forKey: "anotherKey", behindBiometrics: behindBiometrics)
+            let result = try secureStorage.getStoredKeysMatching(prefix: "nonExistingKey", biometricPrompt: nil)
+            XCTAssertEqual(0, result.count)
+        } catch let error {
+            XCTFail("Keychain operation failed - \(error)")
+        }
+
+        do {
+            let result = try secureStorage.getStoredKeysMatching(prefix: "nonExistingKey", biometricPrompt: nil)
+            XCTAssertEqual(0, result.count)
+        } catch let error {
+            XCTFail("Keychain operation failed - \(error)")
+        }
+        
+        do {
+            try secureStorage.set(data: "someData1".data(using: .utf8)!, forKey: "account1", behindBiometrics: behindBiometrics)
+            try secureStorage.set(data: "someData1".data(using: .utf8)!, forKey: "account2", behindBiometrics: behindBiometrics)
+            try secureStorage.set(data: "someData3".data(using: .utf8)!, forKey: "anotherKey", behindBiometrics: behindBiometrics)
+            let result = try secureStorage.getStoredKeysMatching(prefix: "", biometricPrompt: nil)
+            XCTAssertEqual(3, result.count)
+            XCTAssertTrue(result.contains("account1"))
+            XCTAssertTrue(result.contains("account2"))
+            XCTAssertTrue(result.contains("anotherKey"))
+        } catch let error {
+            XCTFail("Keychain operation failed - \(error)")
+        }
+
     }
 }

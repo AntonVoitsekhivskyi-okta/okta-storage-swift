@@ -212,7 +212,7 @@ open class OktaSecureStorage: NSObject {
         return data
     }
 
-    @objc open func getStoredKeysMatching(prefix: String, biometricPrompt prompt: String? = nil, accessGroup: String? = nil) throws -> [String] {
+    @objc open func getStoredKeys(biometricPrompt prompt: String? = nil, accessGroup: String? = nil) throws -> [String] {
         var query = findQuery(accessGroup: accessGroup)
         query[kSecReturnAttributes as String] = kCFBooleanTrue
         query[kSecMatchLimit as String] = kSecMatchLimitAll
@@ -233,7 +233,6 @@ open class OktaSecureStorage: NSObject {
         }
         let keys = results
             .compactMap { return $0[kSecAttrAccount] as? String }
-            .filter { $0.hasPrefix(prefix) }
 
         return keys
     }

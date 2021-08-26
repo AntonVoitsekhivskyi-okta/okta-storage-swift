@@ -72,11 +72,11 @@ do {
 }
 ```
 
-Also, if you need to know what keys are already stored by some prefix:
+Also, if you need to know what keys are already stored:
 
 ```swift
 do {
-    let keys = try oktaStorage.getStoredKeysMatching(prefix:"account_")
+    let keys = try oktaStorage.getStoredKeys()
 } catch let error {
     // Handle error
 }
@@ -211,15 +211,15 @@ DispatchQueue.global().async {
 }
 ```
 
-### `getStoredKeysMatching(prefix:biometricPrompt:accessGroup:)`
+### `getStoredKeys(biometricPrompt:accessGroup:)`
 
-Retrieves the stored keychain keys from the keychain by a specific prefix. Additionally method expects optional `prompt` message for the keychain item stored behind a biometric factor. Use `accessGroup` to access shared keychain items between apps.
-> * Note: Similarly to `getData` function, iOS will show native Touch ID or Face ID message view in case of biometrics enabled storage. It means that function may be blocked and wait for the user's action. It is advised to call  `getStoredKeysMatching` function in a background thread
+Retrieves previously stored keys from the keychain. Additionally method expects optional `prompt` message for the keychain item stored behind a biometric factor. Use `accessGroup` to access shared keychain items between apps.
+> * Note: Similarly to `getData` function, iOS will show native Touch ID or Face ID message view in case of biometrics enabled storage. It means that function may be blocked and wait for the user's action. It is advised to call  `getStoredKeys` function in a background thread
 
 ```swift
 DispatchQueue.global().async {
     do {
-        let keys = try oktaStorage.getStoredKeysMatching("SomePrefix_")
+        let keys = try oktaStorage.getStoredKeys()
     } catch let error {
         // Handle error
     }

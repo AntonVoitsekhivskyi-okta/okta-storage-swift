@@ -198,7 +198,7 @@ open class OktaSecureStorage: NSObject {
 
         if let password = applicationPassword {
             let laContext = LAContext()
-            laContext.setCredential(password.data(using: .utf8), type: LACredentialType.applicationPassword)
+            laContext.setCredential(password.data(using: .utf8), type: .applicationPassword)
             query[kSecUseAuthenticationContext as String] = laContext
         }
         
@@ -228,11 +228,13 @@ open class OktaSecureStorage: NSObject {
         
         var ref: AnyObject? = nil
         let errorCode = SecItemCopyMatching(query as CFDictionary, &ref)
-        guard errorCode == noErr, let results = ref as? [[AnyHashable: Any]] else {
+        guard errorCode == noErr,
+            let results = ref as? [[AnyHashable: Any]]
+        else {
             throw NSError(domain: OktaSecureStorage.keychainErrorDomain, code: Int(errorCode), userInfo: nil)
         }
         let keys = results
-            .compactMap { return $0[kSecAttrAccount] as? String }
+            .compactMap { $0[kSecAttrAccount] as? String }
 
         return keys
     }

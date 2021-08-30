@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
 Store passwords, tokens and other secrets in an encrypted database using OktaStorage library
                        DESC
   s.platforms    = { :ios => "10.0", :osx => "10.14"}
-  s.homepage         = 'https://github.com/okta/okta-storage-swift'
+  s.homepage         = 'https://github.com/AntonVoitsekhivskyi-okta/okta-storage-swift'
   s.license          = { :type => 'APACHE2', :file => 'LICENSE' }
   s.authors          = { "Okta Developers" => "developer@okta.com"}
   s.source           = { :git => 'https://github.com/AntonVoitsekhivskyi-okta/okta-storage-swift.git', :tag => s.version.to_s }

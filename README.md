@@ -214,7 +214,7 @@ DispatchQueue.global().async {
 ### `getStoredKeys(biometricPrompt:accessGroup:)`
 
 Retrieves previously stored keys from the keychain. Additionally method expects optional `prompt` message for the keychain item stored behind a biometric factor. Use `accessGroup` to access shared keychain items between apps.
-> * Note: Similarly to `getData` function, iOS will show native Touch ID or Face ID message view in case of biometrics enabled storage. It means that function may be blocked and wait for the user's action. It is advised to call  `getStoredKeys` function in a background thread
+> * Note: Similarly to `getData` function, iOS will show native Touch ID or Face ID message view in case of biometrics enabled storage. It means that function may be blocked and wait for the user's action. It is advised to call  `getStoredKeys` function in a background thread.
 
 ```swift
 DispatchQueue.global().async {

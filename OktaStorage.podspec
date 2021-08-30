@@ -9,7 +9,7 @@ Store passwords, tokens and other secrets in an encrypted database using OktaSto
   s.homepage         = 'https://github.com/okta/okta-storage-swift'
   s.license          = { :type => 'APACHE2', :file => 'LICENSE' }
   s.authors          = { "Okta Developers" => "developer@okta.com"}
-  s.source           = { :git => 'https://github.com/okta/okta-storage-swift.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/AntonVoitsekhivskyi-okta/okta-storage-swift.git', :tag => s.version.to_s }
   s.swift_version = '5.0'
   s.osx.deployment_target = '10.14'
   s.ios.deployment_target = '10.0'
